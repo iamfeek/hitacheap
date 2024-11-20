@@ -1,9 +1,10 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { products } from './hitachi/data';
 
-export default function HitachiCatalog() {
+// Move the main component logic into a separate component
+function HitachiCatalogContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     
@@ -162,5 +163,14 @@ export default function HitachiCatalog() {
                 </tbody>
             </table>
         </div>
+    );
+}
+
+// Create the main page component that wraps the content in Suspense
+export default function HitachiCatalog() {
+    return (
+        <Suspense fallback={<div className="font-sans m-5 p-5">Loading...</div>}>
+            <HitachiCatalogContent />
+        </Suspense>
     );
 } 
